@@ -1,0 +1,21 @@
+# dependencies
+/backend/node_modules
+
+# IDE
+/.idea
+/.awcache
+/.vscode
+
+# misc
+npm-debug.log
+
+# tests
+/backend/test
+/backend/coverage
+/backend/.nyc_output
+
+# dist
+/backend/dist
+
+# architect
+secrets.yml
