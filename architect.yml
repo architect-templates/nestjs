@@ -37,6 +37,7 @@ services:
         username: ${{ parameters.root_db_user }}
         password: ${{ parameters.root_db_pass }}
         protocol: mysql
+        path: /${{ parameters.api_db_name }}
     environment:
       MYSQL_ROOT_PASSWORD: ${{ parameters.root_db_pass }}
       MYSQL_DATABASE: ${{ parameters.api_db_name }}
@@ -57,7 +58,7 @@ services:
       failure_threshold: 3
     environment:
       PORT: *api-port
-      DB_ADDR: ${{ services.api-db.interfaces.mysql.url }}/${{ parameters.api_db_name }}
+      DB_ADDR: ${{ services.api-db.interfaces.mysql.url }}
     ${{ if architect.environment == 'local' }}:
       command: npm run start:debug
       volumes:
