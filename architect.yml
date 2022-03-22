@@ -1,0 +1,67 @@
+name: nestjs-example
+description: |
+  Example component that includes a Nest.js backend and a mysql database.
+homepage: https://github.com/architect-team/architect-cli/tree/master/examples/nestjs
+keywords:
+  - typescript
+  - nest.js
+  - mysql
+
+interfaces:
+  api:
+    url: ${{ services.api.interfaces.main.url }}
+    ingress:
+      subdomain: api
+
+parameters:
+  api_db_host:
+    description: API database host override
+    required: false
+  api_db_name:
+    description: Name of the database used by the API
+    default: test_database
+  root_db_user:
+    description: Root user to assign to the generated database
+    default: root
+  root_db_pass:
+    description: Root password to assign to the generated database
+    default: architect
+
+services:
+  api-db:
+    image: mysql:8
+    interfaces:
+      mysql:
+        host: ${{ parameters.api_db_host }}
+        port: 3306
+        username: ${{ parameters.root_db_user }}
+        password: ${{ parameters.root_db_pass }}
+        protocol: mysql
+        path: /${{ parameters.api_db_name }}
+    environment:
+      MYSQL_ROOT_PASSWORD: ${{ parameters.root_db_pass }}
+      MYSQL_DATABASE: ${{ parameters.api_db_name }}
+
+  api:
+    depends_on:
+      - api-db
+    build:
+      context: ./backend
+      args:
+        NODE_ENV: production
+    interfaces:
+      main: &api-port 3000
+    liveness_probe:
+      path: /users
+      port: *api-port
+      interval: 10s
+      failure_threshold: 3
+    environment:
+      PORT: *api-port
+      DB_ADDR: ${{ services.api-db.interfaces.mysql.url }}
+    ${{ if architect.environment == 'local' }}:
+      command: npm run start:debug
+      volumes:
+        src:
+          mount_path: /usr/src/app/src
+          host_path: ./backend/src
