@@ -38,15 +38,3 @@ curl --location --request POST 'http://api.arc.localhost/users' --header 'Conten
     "lastName": "user"
 }'
 ```
-
-## Deploying to the cloud
-
-Want to try deploying this to a cloud environment? Architect's got you covered there too! Just click the button below to deploy it to a sample Kubernetes cluster powered by Architect Cloud:
-
-[![Deploy Button](https://docs.architect.io/deploy-button.svg)](https://cloud.architect.io/examples/components/nestjs/deploy?tag=latest&interface=api%3Aapi)
-
-Alternatively, if you're already familiar with Architect and have your own environment registered, you can use the command below instead:
-
-```sh
-$ architect deploy examples/nestjs:latest -a <account-name> -e <environment-name> -i api:api
-```
