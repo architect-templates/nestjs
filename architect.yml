@@ -1,4 +1,4 @@
-name: nestjs-example
+name: nest
 description: |
   Example component that includes a Nest.js backend and a mysql database.
 homepage: https://github.com/architect-team/architect-cli/tree/master/examples/nestjs
