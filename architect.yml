@@ -12,7 +12,7 @@ interfaces:
     ingress:
       subdomain: api
 
-parameters:
+secrets:
   api_db_host:
     description: API database host override
     required: false
@@ -31,15 +31,15 @@ services:
     image: mysql:8
     interfaces:
       mysql:
-        host: ${{ parameters.api_db_host }}
+        host: ${{ secrets.api_db_host }}
         port: 3306
-        username: ${{ parameters.root_db_user }}
-        password: ${{ parameters.root_db_pass }}
+        username: ${{ secrets.root_db_user }}
+        password: ${{ secrets.root_db_pass }}
         protocol: mysql
-        path: /${{ parameters.api_db_name }}
+        path: /${{ secrets.api_db_name }}
     environment:
-      MYSQL_ROOT_PASSWORD: ${{ parameters.root_db_pass }}
-      MYSQL_DATABASE: ${{ parameters.api_db_name }}
+      MYSQL_ROOT_PASSWORD: ${{ secrets.root_db_pass }}
+      MYSQL_DATABASE: ${{ secrets.api_db_name }}
 
   api:
     depends_on:
