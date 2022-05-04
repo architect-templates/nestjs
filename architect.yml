@@ -12,7 +12,7 @@ interfaces:
     ingress:
       subdomain: api
 
-parameters:
+secrets:
   api_db_host:
     description: API database host override
     required: false
