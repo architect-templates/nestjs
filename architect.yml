@@ -51,8 +51,7 @@ services:
     interfaces:
       main: &api-port 3000
     liveness_probe:
-      path: /users
-      port: *api-port
+      command: curl localhost:3000/users
       interval: 30s
       failure_threshold: 3
     environment:
