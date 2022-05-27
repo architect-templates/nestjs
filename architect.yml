@@ -28,7 +28,7 @@ secrets:
 
 services:
   api-db:
-    image: mysql:8
+    image: mariadb:latest
     interfaces:
       mysql:
         host: ${{ secrets.api_db_host }}
@@ -51,7 +51,7 @@ services:
     interfaces:
       main: &api-port 3000
     liveness_probe:
-      command: curl --fail localhost:3000/users || exit 1
+      command: curl --fail ${{ services.api.interfaces.main.url }}/users || exit 1
       interval: 30s
       failure_threshold: 3
     environment:
