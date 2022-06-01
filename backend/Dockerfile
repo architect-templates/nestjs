@@ -1,4 +1,7 @@
 FROM node:16-alpine
+
+RUN apk add curl
+
 WORKDIR /usr/src/app
 
 COPY package*.json tsconfig*.json ./
