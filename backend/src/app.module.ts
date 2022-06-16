@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from 'src/app.controller';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -12,5 +13,6 @@ import { UsersModule } from './users/users.module';
     }),
     UsersModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
