@@ -12,7 +12,7 @@
 
 This example will show you the use-case for using TypeScript on Architect leveraging the NestJS tutorial application – [Users](https://github.com/nestjs/nest/tree/master/sample/05-sql-typeorm). In this example, we've written a component spec (the `architect.yml` file) that defines a component to run a TypeScript-based web application.
 
-[Learn more about the architect.yml file](//docs.architect.io/configuration)
+[Learn more about the architect.yml file](//docs.architect.io/components/architect-yml/)
 
 ## Running locally
 
