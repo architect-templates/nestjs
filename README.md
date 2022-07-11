@@ -20,14 +20,14 @@ Architect component specs are declarative, so it can be run locally or remotely 
 
 ```sh
 # Clone the repository and navigate to this directory
-$ git clone https://github.com/architect-team/architect-cli.git
-$ cd ./architect-cli/examples/nestjs
+$ git clone https://github.com/architect-templates/nestjs.git
+$ cd ./nestjs
 
 # Register the component to the local registry
 $ architect link .
 
-# Deploy using the dev command
-$ architect dev examples/nestjs -e local
+# Deploy locally using the dev command
+$ architect dev .
 ```
 
 Once the deploy has completed, you can reach your new service by going to http://api.arc.localhost/users. In order to create a new user, you can use the command below:
