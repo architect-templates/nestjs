@@ -50,10 +50,6 @@ services:
         NODE_ENV: production
     interfaces:
       main: &api-port 3000
-    liveness_probe:
-      command: curl --fail localhost:3000/users || exit 1
-      interval: 30s
-      failure_threshold: 3
     environment:
       PORT: *api-port
       DB_ADDR: ${{ services.api-db.interfaces.mysql.url }}
