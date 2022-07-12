@@ -51,7 +51,7 @@ services:
     interfaces:
       main: &api-port 3000
     liveness_probe:
-      command: sh -c "curl --fail localhost:3000/users || exit 1"
+      command: curl --fail localhost:3000/users
       interval: 30s
       failure_threshold: 3
     environment:
@@ -59,8 +59,6 @@ services:
       DB_ADDR: ${{ services.api-db.interfaces.mysql.url }}
     ${{ if architect.environment == 'local' }}:
       command: npm run start:debug
-      liveness_probe:
-        command: curl --fail localhost:3000/users || exit 1
       volumes:
         src:
           mount_path: /usr/src/app/src
