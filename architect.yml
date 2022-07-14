@@ -57,8 +57,11 @@ services:
     environment:
       PORT: *api-port
       DB_ADDR: ${{ services.api-db.interfaces.mysql.url }}
-    ${{ if architect.environment == 'local' }}:
+    debug:
       command: npm run start:debug
+      build:
+        args:
+          NODE_ENV: development
       volumes:
         src:
           mount_path: /usr/src/app/src
