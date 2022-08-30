@@ -34,10 +34,10 @@ $ architect link .
 $ architect dev .
 ```
 
-Once the deploy has completed, you can reach your new service by going to http://api.arc.localhost/users. In order to create a new user, you can use the command below:
+Once the deploy has completed, you can reach your new service by going to https://api.localhost.architect.sh/users. In order to create a new user, you can use the command below:
 
 ```sh
-curl --location --request POST 'http://api.arc.localhost/users' --header 'Content-Type: application/json' --data-raw '{
+curl --location --request POST 'https://api.localhost.architect.sh/users' --header 'Content-Type: application/json' --data-raw '{
     "firstName": "test",
     "lastName": "user"
 }'
