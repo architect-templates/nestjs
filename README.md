@@ -27,11 +27,8 @@ Architect component specs are declarative, so it can be run locally or remotely 
 $ git clone https://github.com/architect-templates/nestjs.git
 $ cd ./nestjs
 
-# Register the component to the local registry
-$ architect link .
-
 # Deploy locally using the dev command
-$ architect dev .
+$ architect dev architect.yml
 ```
 
 Once the deploy has completed, you can reach your new service by going to https://api.localhost.architect.sh/users. In order to create a new user, you can use the command below:
@@ -41,4 +38,16 @@ curl --location --request POST 'https://api.localhost.architect.sh/users' --head
     "firstName": "test",
     "lastName": "user"
 }'
+```
+
+## Deploying to the Cloud
+
+Want to try deploying this to a cloud environment? Architect's got you covered there, too! It only takes a minute to
+[sign up for a free account](https://cloud.architect.io/signup).
+
+You can then [deploy the application](https://docs.architect.io/getting-started/introduction/#deploy-to-the-cloud). To do this, run the following command. "example-environment" is the name of the free environment that is created when you register with Architect.
+
+```sh
+# Deploy to Architect Cloud
+$ architect deploy architect.yml -e example-environment
 ```
