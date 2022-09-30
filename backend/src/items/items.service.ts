@@ -19,7 +19,7 @@ export class ItemsService {
     return this.itemsRepository.save(item);
   }
 
-  async findAll(): Promise<Item[]> {
+  findAll(): Promise<Item[]> {
     return this.itemsRepository.find();
   }
 
