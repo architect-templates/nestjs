@@ -1,4 +1,4 @@
-name: nest
+name: nestjs
 description: |
   Example component that includes a Nest.js backend and a mysql database.
 keywords:
