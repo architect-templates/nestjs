@@ -5,7 +5,7 @@ export class AppController {
   constructor() {}
 
   @Get()
-  @Redirect('/users')
+  @Redirect('/items')
   index() {
     return {};
   }

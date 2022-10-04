@@ -1,16 +1,10 @@
-name: nest
+name: nestjs
 description: |
   Example component that includes a Nest.js backend and a mysql database.
 keywords:
   - typescript
   - nest.js
   - mysql
-
-interfaces:
-  api:
-    url: ${{ services.api.interfaces.main.url }}
-    ingress:
-      subdomain: api
 
 secrets:
   api_db_host:
@@ -25,12 +19,15 @@ secrets:
   root_db_pass:
     description: Root password to assign to the generated database
     default: architect
+  api_port:
+    description: Port for api
+    default: 3000
 
 services:
   api-db:
     image: mariadb:latest
     interfaces:
-      mysql:
+      database:
         host: ${{ secrets.api_db_host }}
         port: 3306
         username: ${{ secrets.root_db_user }}
@@ -49,14 +46,14 @@ services:
       args:
         NODE_ENV: production
     interfaces:
-      main: &api-port 3000
+      http: ${{ secrets.api_port }}
     liveness_probe:
-      command: curl --fail localhost:3000/users
+      command: curl --fail localhost:3000/items
       interval: 30s
       failure_threshold: 3
     environment:
-      PORT: *api-port
-      DB_ADDR: ${{ services.api-db.interfaces.mysql.url }}
+      PORT: ${{ secrets.api_port }}
+      DB_ADDR: ${{ services.api-db.interfaces.database.url }}
     debug:
       command: npm run start:debug
       build:
@@ -66,3 +63,10 @@ services:
         src:
           mount_path: /usr/src/app/src
           host_path: ./backend/src
+
+interfaces:
+  api:
+    description: A description
+    url: ${{ services.api.interfaces.http.url }}
+    ingress:
+      subdomain: api
