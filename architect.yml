@@ -46,7 +46,10 @@ services:
       args:
         NODE_ENV: production
     interfaces:
-      http: ${{ secrets.api_port }}
+      main:
+        port: ${{ secrets.api_port }}
+        ingress:
+          subdomain: api
     liveness_probe:
       command: curl --fail localhost:3000/items
       interval: 30s
@@ -63,10 +66,3 @@ services:
         src:
           mount_path: /usr/src/app/src
           host_path: ./backend/src
-
-interfaces:
-  api:
-    description: A description
-    url: ${{ services.api.interfaces.http.url }}
-    ingress:
-      subdomain: api
