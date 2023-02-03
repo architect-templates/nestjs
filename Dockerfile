@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:18-alpine
 
 RUN apk add curl
 
@@ -8,6 +8,7 @@ COPY package*.json tsconfig*.json ./
 RUN npm ci
 
 COPY src/ src/
+COPY public/ public/
 RUN npm run build
 RUN rm -r src
 

@@ -24,7 +24,7 @@ export class ItemsService {
   }
 
   findOne(id: string): Promise<Item> {
-    return this.itemsRepository.findOne(id);
+    return this.itemsRepository.findOne({ where: { id: parseInt(id) } });
   }
 
   async remove(id: string): Promise<void> {
