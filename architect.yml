@@ -1,11 +1,13 @@
 name: nestjs
-description: |
-  Example component that includes a Nest.js and a postgres database.
+description: Example component that includes a Nest.js and a postgres database.
 keywords:
+  - architect
   - typescript
   - nest.js
   - postgres
 
+# Add secrets to be used by different services. For more information:
+# https://docs.architect.io/deployments/secrets/
 secrets:
   db_user:
     description: Root user to assign to the component's database
@@ -24,6 +26,49 @@ secrets:
     default: 3000
 
 services:
+  ### This service is the actual Nest.js component ###
+  api:
+    # Build context is the location of your application relative to the architect.yml file
+    build:
+      context: .
+      args:
+        NODE_ENV: production
+    depends_on:
+      - api-db
+    interfaces:
+      main:
+        port: ${{ secrets.api_port }}
+        ingress:
+          subdomain: api
+    # The liveness_probe makes sure the application is healthy - if not, it will re-start the application
+    liveness_probe:
+      command: curl --fail localhost:3000
+      interval: 30s
+      failure_threshold: 3
+    # Set environment variables for your application here
+    environment:
+      PORT: ${{ secrets.api_port }}
+      PG_USER: ${{ secrets.db_user }}
+      PG_PASSWORD: ${{ secrets.db_pass }}
+      PG_DATABASE: ${{ secrets.db_name }}
+      DB_HOST: ${{ services.api-db.interfaces.main.host }}
+      DB_PORT: ${{ services.api-db.interfaces.main.port }}
+    # Debug block is used to enable hot-reloading to make real-time changes to an
+    #   application while running `architect dev`. For more info, see -
+    #   https://docs.architect.io/components/local-configuration/#hot-reloading
+    debug:
+      command: npm run start:debug
+      build:
+        args:
+          NODE_ENV: development
+      volumes:
+        src:
+          # The `WORKDIR` defined in the Dockerfile (/usr/src/app)
+          mount_path: /usr/src/app
+          # Path to source code relative to the architect.yml file
+          host_path: .
+
+  # Database service
   api-db:
     image: postgres:12
     interfaces:
@@ -34,36 +79,3 @@ services:
       POSTGRES_USER: ${{ secrets.db_user }}
       POSTGRES_PASSWORD: ${{ secrets.db_pass }}
       POSTGRES_DB: ${{ secrets.db_name }}
-
-  api:
-    depends_on:
-      - api-db
-    build:
-      context: .
-      args:
-        NODE_ENV: production
-    interfaces:
-      main:
-        port: ${{ secrets.api_port }}
-        ingress:
-          subdomain: api
-    liveness_probe:
-      command: curl --fail localhost:3000
-      interval: 30s
-      failure_threshold: 3
-    environment:
-      PORT: ${{ secrets.api_port }}
-      PG_USER: ${{ secrets.db_user }}
-      PG_PASSWORD: ${{ secrets.db_pass }}
-      PG_DATABASE: ${{ secrets.db_name }}
-      DB_HOST: ${{ services.api-db.interfaces.main.host }}
-      DB_PORT: ${{ services.api-db.interfaces.main.port }}
-    debug:
-      command: npm run start:debug
-      build:
-        args:
-          NODE_ENV: development
-      volumes:
-        src:
-          mount_path: /usr/src/app
-          host_path: .
