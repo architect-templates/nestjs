@@ -1,42 +1,39 @@
 name: nestjs
 description: |
-  Example component that includes a Nest.js and a mysql database.
+  Example component that includes a Nest.js and a postgres database.
 keywords:
   - typescript
   - nest.js
-  - mysql
+  - postgres
 
 secrets:
-  api_db_host:
-    description: API database host override
-    required: false
-  api_db_name:
-    description: Name of the database used by the API
-    default: test_database
-  root_db_user:
-    description: Root user to assign to the generated database
-    default: root
-  root_db_pass:
-    description: Root password to assign to the generated database
+  db_user:
+    description: Root user to assign to the component's database
     default: architect
+  db_pass:
+    description: Root password to assign to the component's database
+    default: secret
+  db_name:
+    description: Name of the database the component will store content in
+    default: api-db
+  db_port:
+    description: Port for the database
+    default: 5432
   api_port:
     description: Port for api
     default: 3000
 
 services:
   api-db:
-    image: mariadb:latest
+    image: postgres:12
     interfaces:
-      database:
-        host: ${{ secrets.api_db_host }}
-        port: 3306
-        username: ${{ secrets.root_db_user }}
-        password: ${{ secrets.root_db_pass }}
-        protocol: mysql
-        path: /${{ secrets.api_db_name }}
+      main:
+        port: ${{ secrets.db_port }}
+        protocol: postgresql
     environment:
-      MYSQL_ROOT_PASSWORD: ${{ secrets.root_db_pass }}
-      MYSQL_DATABASE: ${{ secrets.api_db_name }}
+      POSTGRES_USER: ${{ secrets.db_user }}
+      POSTGRES_PASSWORD: ${{ secrets.db_pass }}
+      POSTGRES_DB: ${{ secrets.db_name }}
 
   api:
     depends_on:
@@ -52,11 +49,15 @@ services:
           subdomain: api
     liveness_probe:
       command: curl --fail localhost:3000
-      interval: 10s
+      interval: 30s
       failure_threshold: 3
     environment:
       PORT: ${{ secrets.api_port }}
-      DB_ADDR: ${{ services.api-db.interfaces.database.url }}
+      PG_USER: ${{ secrets.db_user }}
+      PG_PASSWORD: ${{ secrets.db_pass }}
+      PG_DATABASE: ${{ secrets.db_name }}
+      DB_HOST: ${{ services.api-db.interfaces.main.host }}
+      DB_PORT: ${{ services.api-db.interfaces.main.port }}
     debug:
       command: npm run start:debug
       build:
@@ -64,5 +65,5 @@ services:
           NODE_ENV: development
       volumes:
         src:
-          mount_path: /usr/src/app/src
-          host_path: ./src
+          mount_path: /usr/src/app
+          host_path: .
