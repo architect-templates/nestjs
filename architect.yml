@@ -63,10 +63,15 @@ services:
           NODE_ENV: development
       volumes:
         src:
-          # The `WORKDIR` defined in the Dockerfile (/usr/src/app)
-          mount_path: /usr/src/app
+          # The `WORKDIR` defined in the Dockerfile (/usr/src/app) + src
+          mount_path: /usr/src/app/src
           # Path to source code relative to the architect.yml file
-          host_path: .
+          host_path: ./src
+        public:
+          # The `WORKDIR` defined in the Dockerfile (/usr/src/app) + public
+          mount_path: /usr/src/app/public
+          # Path to public code relative to the architect.yml file
+          host_path: ./public
 
   # Database service
   api-db:

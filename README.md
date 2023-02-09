@@ -31,15 +31,6 @@ $ cd ./nestjs
 $ architect dev architect.yml
 ```
 
-Once the deploy has completed, you can reach your new service by going to https://api.localhost.architect.sh. In order to create a new item, you can use the command below:
-
-```sh
-curl --location --request POST 'https://api.localhost.architect.sh/api/items' --header 'Content-Type: application/json' --data-raw '{
-    "name": "test-item",
-    "rating": "5"
-}'
-```
-
 ## Deploying to the Cloud
 
 Want to try deploying this to a cloud environment? Architect's got you covered there, too! It only takes a minute to
