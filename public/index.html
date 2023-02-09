@@ -99,8 +99,7 @@
         getData();
       }).catch(error => console.log('error:', error));
 
-      document.getElementById("movie-title").reset();
-      document.getElementById("movie-rating").reset();
+      window.location.reload();
     }
 
     function buildItemList(data) {
