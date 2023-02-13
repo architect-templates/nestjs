@@ -1,62 +1,61 @@
 name: nestjs
-description: |
-  Example component that includes a Nest.js backend and a mysql database.
+description: Example component that includes a Nest.js and a postgres database.
 keywords:
+  - architect
   - typescript
   - nest.js
-  - mysql
+  - postgres
 
+# Add secrets to be used by different services. For more information:
+# https://docs.architect.io/deployments/secrets/
 secrets:
-  api_db_host:
-    description: API database host override
-    required: false
-  api_db_name:
-    description: Name of the database used by the API
-    default: test_database
-  root_db_user:
-    description: Root user to assign to the generated database
-    default: root
-  root_db_pass:
-    description: Root password to assign to the generated database
+  db_user:
+    description: Root user to assign to the component's database
     default: architect
-  api_port:
-    description: Port for api
+  db_pass:
+    description: Root password to assign to the component's database
+    default: secret
+  db_name:
+    description: Name of the database the component will store content in
+    default: api-db
+  db_port:
+    description: Port for the database
+    default: 5432
+  app_port:
+    description: Port for app
     default: 3000
 
 services:
-  api-db:
-    image: mariadb:latest
-    interfaces:
-      database:
-        host: ${{ secrets.api_db_host }}
-        port: 3306
-        username: ${{ secrets.root_db_user }}
-        password: ${{ secrets.root_db_pass }}
-        protocol: mysql
-        path: /${{ secrets.api_db_name }}
-    environment:
-      MYSQL_ROOT_PASSWORD: ${{ secrets.root_db_pass }}
-      MYSQL_DATABASE: ${{ secrets.api_db_name }}
-
-  api:
-    depends_on:
-      - api-db
+  ### This service is the actual Nest.js component ###
+  app:
+    # Build context is the location of your application relative to the architect.yml file
     build:
-      context: ./backend
+      context: .
       args:
         NODE_ENV: production
+    depends_on:
+      - api-db
     interfaces:
       main:
-        port: ${{ secrets.api_port }}
+        port: ${{ secrets.app_port }}
         ingress:
-          subdomain: api
+          subdomain: app
+    # The liveness_probe makes sure the application is healthy - if not, it will re-start the application
     liveness_probe:
-      command: curl --fail localhost:3000/items
+      command: curl --fail localhost:3000
       interval: 30s
       failure_threshold: 3
+    # Set environment variables for your application here
     environment:
-      PORT: ${{ secrets.api_port }}
-      DB_ADDR: ${{ services.api-db.interfaces.database.url }}
+      PORT: ${{ secrets.app_port }}
+      PG_USER: ${{ secrets.db_user }}
+      PG_PASSWORD: ${{ secrets.db_pass }}
+      PG_DATABASE: ${{ secrets.db_name }}
+      DB_HOST: ${{ services.api-db.interfaces.main.host }}
+      DB_PORT: ${{ services.api-db.interfaces.main.port }}
+    # Debug block is used to enable hot-reloading to make real-time changes to an
+    #   application while running `architect dev`. For more info, see -
+    #   https://docs.architect.io/components/local-configuration/#hot-reloading
     debug:
       command: npm run start:debug
       build:
@@ -64,5 +63,24 @@ services:
           NODE_ENV: development
       volumes:
         src:
+          # The `WORKDIR` defined in the Dockerfile (/usr/src/app) + src
           mount_path: /usr/src/app/src
-          host_path: ./backend/src
+          # Path to source code relative to the architect.yml file
+          host_path: ./src
+        public:
+          # The `WORKDIR` defined in the Dockerfile (/usr/src/app) + public
+          mount_path: /usr/src/app/public
+          # Path to public code relative to the architect.yml file
+          host_path: ./public
+
+  # Database service
+  api-db:
+    image: postgres:12
+    interfaces:
+      main:
+        port: ${{ secrets.db_port }}
+        protocol: postgresql
+    environment:
+      POSTGRES_USER: ${{ secrets.db_user }}
+      POSTGRES_PASSWORD: ${{ secrets.db_pass }}
+      POSTGRES_DB: ${{ secrets.db_name }}

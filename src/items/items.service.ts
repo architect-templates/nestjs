@@ -8,7 +8,7 @@ import { Item } from './item.entity';
 export class ItemsService {
   constructor(
     @InjectRepository(Item)
-    private readonly itemsRepository: Repository<Item>,
+    private readonly itemsRepository: Repository<Item>
   ) {}
 
   create(createItemDto: CreateItemDto): Promise<Item> {
@@ -21,13 +21,5 @@ export class ItemsService {
 
   findAll(): Promise<Item[]> {
     return this.itemsRepository.find();
-  }
-
-  findOne(id: string): Promise<Item> {
-    return this.itemsRepository.findOne(id);
-  }
-
-  async remove(id: string): Promise<void> {
-    await this.itemsRepository.delete(id);
   }
 }

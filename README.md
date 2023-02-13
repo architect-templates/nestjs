@@ -13,10 +13,9 @@
 ---
 
 # Running NestJS on Architect
+This example will show you the use-case for using TypeScript on Architect leveraging the NestJS tutorial application from the getting started docs. In this example, we've written a component spec (the architect.yml file) that defines a component to run a TypeScript-based web application.
 
-This example will show you the use-case for using TypeScript on Architect similar to the NestJS tutorial application – [Users](https://github.com/nestjs/nest/tree/master/sample/05-sql-typeorm). In this example, we've written a component spec (the `architect.yml` file) that defines a component to run a TypeScript-based REST API.
-
-[Learn more about the architect.yml file](//docs.architect.io/components/architect-yml/)
+Learn more about the architect.yml file
 
 ## Running locally
 
@@ -29,15 +28,6 @@ $ cd ./nestjs
 
 # Deploy locally using the dev command
 $ architect dev architect.yml
-```
-
-Once the deploy has completed, you can reach your new service by going to https://api.localhost.architect.sh/items. In order to create a new item, you can use the command below:
-
-```sh
-curl --location --request POST 'https://api.localhost.architect.sh/items' --header 'Content-Type: application/json' --data-raw '{
-    "name": "test-item",
-    "rating": "5"
-}'
 ```
 
 ## Deploying to the Cloud
