@@ -16,14 +16,4 @@ export class ItemsController {
   findAll(): Promise<Item[]> {
     return this.itemsService.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string): Promise<Item> {
-    return this.itemsService.findOne(id);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.itemsService.remove(id);
-  }
 }

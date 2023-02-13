@@ -22,12 +22,4 @@ export class ItemsService {
   findAll(): Promise<Item[]> {
     return this.itemsRepository.find();
   }
-
-  findOne(id: string): Promise<Item> {
-    return this.itemsRepository.findOne({ where: { id: parseInt(id) } });
-  }
-
-  async remove(id: string): Promise<void> {
-    await this.itemsRepository.delete(id);
-  }
 }

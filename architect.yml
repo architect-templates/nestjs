@@ -21,13 +21,13 @@ secrets:
   db_port:
     description: Port for the database
     default: 5432
-  api_port:
-    description: Port for api
+  app_port:
+    description: Port for app
     default: 3000
 
 services:
   ### This service is the actual Nest.js component ###
-  api:
+  app:
     # Build context is the location of your application relative to the architect.yml file
     build:
       context: .
@@ -37,9 +37,9 @@ services:
       - api-db
     interfaces:
       main:
-        port: ${{ secrets.api_port }}
+        port: ${{ secrets.app_port }}
         ingress:
-          subdomain: api
+          subdomain: app
     # The liveness_probe makes sure the application is healthy - if not, it will re-start the application
     liveness_probe:
       command: curl --fail localhost:3000
@@ -47,7 +47,7 @@ services:
       failure_threshold: 3
     # Set environment variables for your application here
     environment:
-      PORT: ${{ secrets.api_port }}
+      PORT: ${{ secrets.app_port }}
       PG_USER: ${{ secrets.db_user }}
       PG_PASSWORD: ${{ secrets.db_pass }}
       PG_DATABASE: ${{ secrets.db_name }}

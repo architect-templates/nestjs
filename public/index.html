@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" type="text/css" href="./style.css" />
-    <title>Architect - "Your Framework" app</title>
+    <title>Architect - NestJS example app</title>
   </head>
 
   <body>
@@ -42,8 +42,8 @@
                   project folder and open it.
                 </li>
                 <li>
-                  Uncomment line 11 to show the h1 tag, save the file, and
-                  refresh the app.
+                  Uncomment line 10 to show the h1 tag, save the file, and
+                  refresh the page.
                 </li>
                 <li>
                   For more info, checkout out our
@@ -137,8 +137,11 @@
       }
 
       function postData() {
-        const name = document.getElementById('movie-title').value;
-        const rating = document.getElementById('movie-rating').value;
+        const movie_title_id = 'movie-title';
+        const movie_rating_id = 'movie-rating';
+
+        const name = document.getElementById(movie_title_id).value;
+        const rating = document.getElementById(movie_rating_id).value;
         fetch('/api/items', {
           body: JSON.stringify({
             name: name,
@@ -154,8 +157,8 @@
           })
           .catch((error) => console.log('error:', error));
 
-        document.getElementById('movie-title').value = '';
-        document.getElementById('movie-rating').value = '';
+        document.getElementById(movie_title_id).value = '';
+        document.getElementById(movie_rating_id).value = '';
       }
 
       function buildItemList(data) {
