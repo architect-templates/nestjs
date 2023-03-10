@@ -1,0 +1,35 @@
+<div class="container" style="max-width: 444px">
+  <p align="center" style="margin-bottom: 64px">
+    <a href="//architect.io" target="blank">
+      <img
+        src="https://cdn.architect.io/logo/horizontal.png"
+        width="320"
+        alt="Architect Logo"
+      />
+    </a>
+  </p>
+
+  <h1 class="mdc-typography--headline4 center">Favorite movie</h1>
+
+  <form method="POST">
+    <div class="row">
+      <div class="col-6">
+        {{> textField id="name" name="name" label="Name" type="text" block=true }}
+      </div>
+      <div class="col-6">
+        {{> textField id="rating" name="rating" label="Rating 1-5" type="number" min="1" max="5" block=true }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        {{> button text="Submit" type="submit" block=true buttonType="raised" }}
+      </div>
+    </div>
+  </form>
+
+  <div class="row">
+    <div class="col-12">
+      {{> itemsTable items=items }}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<label class="mdc-text-field mdc-text-field--outlined" {{#if block}}style="width: 100%"{{/if}}>
+  <span class="mdc-notched-outline">
+    <span class="mdc-notched-outline__leading"></span>
+    <span class="mdc-notched-outline__notch">
+      <span class="mdc-floating-label" id="{{ id }}">{{ label }}</span>
+    </span>
+    <span class="mdc-notched-outline__trailing"></span>
+  </span>
+  <input
+    type="{{ type }}"
+    class="mdc-text-field__input"
+    name="{{ name }}"
+    aria-labelledby="{{ id }}"
+    {{#if min}}
+      min="{{ min }}"
+    {{/if}}
+    {{#if max}}
+      max="{{ max }}"
+    {{/if}}
+  />
+</label>

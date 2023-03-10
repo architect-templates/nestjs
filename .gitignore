@@ -1,16 +1,35 @@
-# dependencies
+# compiled output
+/dist
 /node_modules
 
-# IDE
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+
+# Tests
+/coverage
+/.nyc_output
+
+# IDEs and editors
 /.idea
-/.awcache
-/.vscode
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
-# misc
-npm-debug.log
-
-# dist
-/dist
-
-# architect
-secrets.yml
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

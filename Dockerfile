@@ -9,6 +9,8 @@ RUN npm ci
 
 COPY src/ src/
 COPY public/ public/
+COPY views/ views/
+
 RUN npm run build
 RUN rm -r src
 

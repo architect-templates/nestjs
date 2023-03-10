@@ -1,0 +1,26 @@
+<div class="mdc-data-table full-width">
+  <div class="mdc-data-table__table-container">
+    <table class="mdc-data-table__table" aria-label="Movie ratings">
+      <thead>
+        <tr class="mdc-data-table__header-row">
+          <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Name</th>
+          <th class="mdc-data-table__header-cell" role="columnheader" scope="col">Rating</th>
+          <th class="mdc-data-table__header-cell mdc-data-table__header-cell--numeric" style="width: 50px" role="columnheader" scope="col"></th>
+        </tr>
+      </thead>
+      <tbody class="mdc-data-table__content">
+        {{#each items}}
+          <tr class="mdc-data-table__row">
+            <th class="mdc-data-table__cell">{{ name }}</th>
+            <td class="mdc-data-table__cell">{{ rating }}</td>
+            <td class="mdc-data-table__cell mdc-data-table__cell--numeric">
+              <form method="POST" action="/delete/{{ id }}">
+                {{> button type="submit" text="Delete" }}
+              </form>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>

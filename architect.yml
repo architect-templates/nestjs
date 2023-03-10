@@ -6,8 +6,6 @@ keywords:
   - nest.js
   - postgres
 
-# Add secrets to be used by different services. For more information:
-# https://docs.architect.io/deployments/secrets/
 secrets:
   db_user:
     description: Root user to assign to the component's database
@@ -21,65 +19,53 @@ secrets:
   db_port:
     description: Port for the database
     default: 5432
-  app_port:
-    description: Port for app
-    default: 3000
+  subdomain:
+    description: The subdomain to expose the application on
+    default: nestjs
 
 services:
-  ### This service is the actual Nest.js component ###
   app:
-    # Build context is the location of your application relative to the architect.yml file
     build:
       context: .
-      args:
-        NODE_ENV: production
-    depends_on:
-      - api-db
     interfaces:
       main:
-        port: ${{ secrets.app_port }}
+        port: 3000
         ingress:
-          subdomain: app
+          subdomain: ${{ secrets.subdomain }}
     # The liveness_probe makes sure the application is healthy - if not, it will re-start the application
     liveness_probe:
       command: curl --fail localhost:3000
       interval: 30s
       failure_threshold: 3
-    # Set environment variables for your application here
+      initial_delay: 10s
     environment:
-      PORT: ${{ secrets.app_port }}
-      PG_USER: ${{ secrets.db_user }}
-      PG_PASSWORD: ${{ secrets.db_pass }}
-      PG_DATABASE: ${{ secrets.db_name }}
-      DB_HOST: ${{ services.api-db.interfaces.main.host }}
-      DB_PORT: ${{ services.api-db.interfaces.main.port }}
+      PORT: 3000
+      DB_URL: ${{ services.api-db.interfaces.main.url }}
     # Debug block is used to enable hot-reloading to make real-time changes to an
     #   application while running `architect dev`. For more info, see -
     #   https://docs.architect.io/components/local-configuration/#hot-reloading
     debug:
       command: npm run start:debug
-      build:
-        args:
-          NODE_ENV: development
       volumes:
         src:
-          # The `WORKDIR` defined in the Dockerfile (/usr/src/app) + src
           mount_path: /usr/src/app/src
-          # Path to source code relative to the architect.yml file
           host_path: ./src
         public:
-          # The `WORKDIR` defined in the Dockerfile (/usr/src/app) + public
           mount_path: /usr/src/app/public
-          # Path to public code relative to the architect.yml file
           host_path: ./public
+        views:
+          mount_path: /usr/src/app/views
+          host_path: ./views
 
-  # Database service
   api-db:
-    image: postgres:12
+    image: postgres:14
     interfaces:
       main:
         port: ${{ secrets.db_port }}
         protocol: postgresql
+        username: ${{ secrets.db_user }}
+        password: ${{ secrets.db_pass }}
+        path: /${{ secrets.db_name }}
     environment:
       POSTGRES_USER: ${{ secrets.db_user }}
       POSTGRES_PASSWORD: ${{ secrets.db_pass }}
