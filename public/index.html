@@ -2,178 +2,93 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" type="text/css" href="./style.css" />
-    <title>Architect - NestJS example app</title>
+    <link rel="icon" href="./favicon.ico" />
+    <title>NestJS App</title>
   </head>
 
   <body>
     <div class="container">
-      <!-- <h1>Uncomment me to see hot reloading in action!</h1> -->
-      <p>
+      <p align="center">
         <a href="//architect.io" target="blank">
-          <img
-            src="https://cdn.architect.io/logo/horizontal.png"
-            width="320"
-            alt="Architect Logo"
-          />
+          <img src="https://cdn.architect.io/logo/horizontal.png" width="320" alt="Architect Logo" />
         </a>
       </p>
-      <div class="card">
-        <div class="card-container">
-          <div id="card-header">
-            <h4><b>Congratulations!</b></h4>
-          </div>
-          <div class="card-content">
-            <p>You've deployed your app locally. Now what?</p>
-            <p>
-              Below are additional steps you can try out with your newly
-              deployed
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://docs.architect.io/tutorial/create-component/"
-                >component</a
-              >.
-            </p>
-            <ul>
-              <li>Check out Hot-reloading</li>
-              <ol>
-                <li>
-                  Go to <kbd class="cmp_input">public/index.html</kbd> in your
-                  project folder and open it.
-                </li>
-                <li>
-                  Uncomment line 10 to show the h1 tag, save the file, and
-                  refresh the page.
-                </li>
-                <li>
-                  For more info, checkout out our
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href="https://docs.architect.io/"
-                    >docs</a
-                  >.
-                </li>
-              </ol>
-              <br />
-              <li>
-                Deploy your app to the cloud via Architect <b>(Recommended)</b>
-              </li>
-              <ol>
-                <li>
-                  Login or register a new Architect account for free at
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href="https://cloud.architect.io/signup"
-                    >architect.io</a
-                  >
-                </li>
-                <li>
-                  Authenticate using the CLI by running the command
-                  <kbd class="cmp_input">architect login</kbd>
-                </li>
-                <li>
-                  Deploy your app to the cloud using the command
-                  <kbd class="cmp_input">architect deploy</kbd>
-                </li>
-              </ol>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div style="padding-bottom: 20px">
-          <div id="card-header">
-            <h4><b>Movie Ratings</b></h4>
-          </div>
+      <div style="margin: 40px">
+        <div id="container">
+          <h1>Favorite Movie</h1>
           <div class="user_inputs">
-            <label> Movie Title </label>
-            <input
-              id="movie-title"
-              placeholder="Movie Title"
-              type="text"
-              name="name"
-              class="form-control"
-              value=""
-              minlength="1"
-              maxlength="80"
-              required
-            />
-          </div>
-          <div class="user_inputs">
-            <label> Rating </label>
-            <input
-              id="movie-rating"
-              placeholder="Rating 1-5"
-              type="number"
-              name="rating"
-              class="form-control"
-              value=""
-              min="1"
-              max="5"
-              required
-            />
+            <input placeholder="Name*" type="text" id="formName" name="name" class="form-control" value="" minlength="1"
+              maxlength="80" required>
+            <input placeholder="Rating 1-5*" type="number" id="formRating" name="rating" class="form-control" value="" min="1"
+              max="5" required>
           </div>
           <div class="d-grid gap-2">
-            <button type="submit" onclick="postData()">Submit</button>
+            <button type="submit" onclick="createItem()">Submit</button>
           </div>
         </div>
+        <div style="margin-bottom: 10px" id="itemList"></div>
 
-        <div th:unless="${#lists.isEmpty(movieRatings)}">
-          <div id="movieRatings"></div>
+        <div th:unless="${#lists.isEmpty(itemRatings)}">
+          <div id="itemRatings"></div>
         </div>
       </div>
     </div>
+
     <script type="text/javascript">
-      function getData() {
-        fetch('/api/items')
+
+      function showItems() {
+        fetch("/api/items")
           .then((response) => response.json())
           .then((result) => {
-            document.getElementById('movieRatings').innerHTML =
+            document.getElementById("itemRatings").innerHTML =
               buildItemList(result);
           })
-          .catch((error) => console.log('error:', error));
+          .catch((error) => console.log("error:", error));
       }
 
-      function postData() {
-        const movie_title_id = 'movie-title';
-        const movie_rating_id = 'movie-rating';
+      function createItem() {
+        const name_id = "formName";
+        const rating_id = "formRating";
 
-        const name = document.getElementById(movie_title_id).value;
-        const rating = document.getElementById(movie_rating_id).value;
-        fetch('/api/items', {
+        const name = document.getElementById(name_id).value;
+        const rating = document.getElementById(rating_id).value;
+        fetch("/api/items", {
           body: JSON.stringify({
             name: name,
             rating: rating,
           }),
-          method: 'post',
+          method: "post",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         })
           .then((result) => {
-            getData();
+            showItems();
           })
-          .catch((error) => console.log('error:', error));
+          .catch((error) => console.log("error:", error));
 
-        document.getElementById(movie_title_id).value = '';
-        document.getElementById(movie_rating_id).value = '';
+        document.getElementById(name_id).value = "";
+        document.getElementById(rating_id).value = "";
       }
 
       function buildItemList(data) {
-        if (data.length === 0) return '';
-        const ratings = data
-          .map((ele) => createTodoElement(ele.name, ele.rating))
-          .join('');
-        return `<table><tr><th>Name</th><th>Rating</th></tr>${ratings}</table>`;
+        if (data.length > 0) {
+          const ratings = data
+            .map((ele) => createItemElement(ele.name, ele.rating))
+            .join("");
+          return `<table><tr><th>Name</th><th>Rating</th></tr>${ratings}</table>`;
+        } else {
+          return "<p>No entries found</p>";
+        }
       }
 
-      function createTodoElement(name, rating) {
+      function createItemElement(name, rating) {
         return `<tr><td>${name}</td><td>${rating}</td></tr>`;
       }
 
-      getData();
+      window.addEventListener("load", function () {
+        showItems();
+      });
     </script>
   </body>
 </html>
