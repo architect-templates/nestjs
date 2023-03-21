@@ -83,7 +83,7 @@ within the component. That means you can make changes to the source code, which 
 application stack.
 
 Give it a try! Search inside your project for "Favorite Movie” and change this string to “Favorite Pizza.” Once you saved
-the file, you’ll see the frontend service recompiling in the logs, and then your browser window will update automatically.
+the file, refresh your browser to see the changes.
 
 ## Deploy to the Cloud
 Do you want to try deploying this application to a cloud environment? Architect's got you covered there, too!
@@ -121,7 +121,6 @@ You are now ready to deploy your component to your environment in Architect's co
 run the following command from the `nestjs` directory:
 
 ```sh
-architect deploy --account <account-name> \
---environment my-first-environment ./architect.yml
+architect deploy --account <account-name> --environment my-first-environment ./architect.yml
 ```
 Congrats! You've deployed your first component using Architect.
