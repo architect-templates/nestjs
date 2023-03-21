@@ -44,7 +44,6 @@ services:
     liveness_probe:
       command: curl --fail localhost:3000
       interval: 30s
-      failure_threshold: 3
     # Set environment variables for your application here
     environment:
       PORT: ${{ secrets.app_port }}
@@ -61,6 +60,12 @@ services:
       build:
         args:
           NODE_ENV: development
+      # The debug liveness probe is configured to run more often with a higher failure_threshold
+      # so that the app is recognized as healthy more quickly.
+      liveness_probe:
+        interval: 5s
+        initial_delay: 5s
+        failure_threshold: 30
       volumes:
         src:
           # The `WORKDIR` defined in the Dockerfile (/usr/src/app) + src

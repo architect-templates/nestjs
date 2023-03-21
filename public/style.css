@@ -1,5 +1,7 @@
 html {
-  font-family: Arimo;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
   background: #FFF;
   scroll-behavior: smooth;
   display: block;
@@ -9,23 +11,15 @@ html {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  
+
 }
 
 body {
   margin: 0;
   height: 100%;
   width: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
 
 table {
@@ -47,9 +41,9 @@ p {
 }
 
 h1 {
-  font-size: calc(1.375rem + 1.5vw);
+  font-size: calc(1 + 1vw);
   margin-top: 0;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   font-weight: 500;
   line-height: 1.2;
   text-align: center;
@@ -65,7 +59,7 @@ h4 {
   margin-top: 1.5rem !important;
   margin-right: auto;
   margin-left: auto;
-  max-width: 85%;
+  max-width: 444px;
 }
 
 .card {
@@ -115,10 +109,6 @@ form {
   margin-bottom: 1em;
 }
 
-.user_inputs {
-  margin-bottom: 1rem;
-}
-
 .form-label {
   padding-top: calc(0.5rem + 1px);
   padding-bottom: calc(0.5rem + 1px);
@@ -149,7 +139,7 @@ input {
 }
 
 button {
-  background-color: rgb(34, 85, 96); 
+  background-color: rgb(34, 85, 96);
   border: none;
   color: #FFF;
   cursor: pointer;
@@ -161,11 +151,11 @@ button {
   display: inline-block;
   line-height: 1.5;
   font-weight: 400;
-  transition: color .15s 
-    ease-in-out,background-color 
-    .15s ease-in-out,border-color 
-    .15s ease-in-out,box-shadow 
-    .15s ease-in-out;  
+  transition: color .15s
+    ease-in-out,background-color
+    .15s ease-in-out,border-color
+    .15s ease-in-out,box-shadow
+    .15s ease-in-out;
 }
 
 table {
@@ -199,4 +189,14 @@ th, td {
 @font-face {
   font-family: Arimo;
   src: url("https://fonts.googleapis.com/css2?family=Arimo");
+}
+
+.form-control {
+  display: inline-block;
+  width: calc(50% - 3px);
+}
+
+.user_inputs {
+  margin-bottom: 1rem;
+  text-align: center;
 }
