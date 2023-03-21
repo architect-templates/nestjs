@@ -85,6 +85,10 @@ services:
       main:
         port: ${{ secrets.db_port }}
         protocol: postgresql
+    liveness_probe:
+      command: pg_isready -d ${{ secrets.db_name }} -U ${{ secrets.db_user }}
+      interval: 10s
+      failure_threshold: 3
     environment:
       POSTGRES_USER: ${{ secrets.db_user }}
       POSTGRES_PASSWORD: ${{ secrets.db_pass }}

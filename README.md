@@ -82,8 +82,7 @@ This application's `architect.yml` file contains a `debug` block that enables ho
 within the component. That means you can make changes to the source code, which will automatically apply to the environment. This lets you quickly iterate and see your changes without restarting the
 application stack.
 
-Give it a try! Search inside your project for "Favorite Movie” and change this string to “Favorite Pizza.” Once you saved
-the file, refresh your browser to see the changes.
+Give it a try! Search inside your project for "Favorite Movie” and change this string to “Favorite Pizza.” Once you've saved the file, refresh your browser to see the changes.
 
 ## Deploy to the Cloud
 Do you want to try deploying this application to a cloud environment? Architect's got you covered there, too!
